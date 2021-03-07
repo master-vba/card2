@@ -1,15 +1,12 @@
-import { Role } from './'
-
 export function configureFakeBackend() {
     // array in local storage for user records
     let users = JSON.parse(localStorage.getItem('users')) || [{ 
         id: 1,
-        title: 'Mr',
-        firstName: 'Joe',
-        lastName: 'Bloggs',
-        email: 'joe@bloggs.com',
-        role: Role.User,
-        password: 'joe123'
+        cvc: '123',
+        expiry: '22/11',
+        userName: 'Joe Doe',
+        cardNumber: '123465789',
+        
     }];
 
     // monkey patch fetch to setup fake backend
@@ -54,14 +51,13 @@ export function configureFakeBackend() {
             function createUser() {
                 const user = body();
 
-                if (users.find(x => x.email === user.email)) {
-                    return error(`User with the email ${user.email} already exists`);
+                if (users.find(x => x.cardNumber === user.cardNumber)) {
+                    return error(`Картица са бројем ${user.cardNumber} већ постоји у бази`);
                 }
 
                 // assign user id and a few other properties then save
                 user.id = newUserId();
-                user.dateCreated = new Date().toISOString();
-                delete user.confirmPassword;
+                user.dateCreated = new Date().toISOString();             
                 users.push(user);
                 localStorage.setItem('users', JSON.stringify(users));
 
@@ -71,14 +67,7 @@ export function configureFakeBackend() {
             function updateUser() {
                 let params = body();
                 let user = users.find(x => x.id === idFromUrl());
-
-                // only update password if included
-                if (!params.password) {
-                    delete params.password;
-                }
-                // don't save confirm password
-                delete params.confirmPassword;
-
+          
                 // update and save user
                 Object.assign(user, params);
                 localStorage.setItem('users', JSON.stringify(users));

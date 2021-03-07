@@ -23,29 +23,31 @@ function List({ match }) {
 
     return (
         <div>
-            <h1>Users</h1>
-            <Link to={`${path}/add`} className="btn btn-sm btn-success mb-2">Add User</Link>
+            <h1>Картице</h1>
+            <Link to={`${path}/add`} className="btn btn-sm btn-success mb-2">Додај картицу</Link>
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th style={{ width: '30%' }}>Name</th>
-                        <th style={{ width: '30%' }}>Email</th>
-                        <th style={{ width: '30%' }}>Role</th>
+                        <th style={{ width: '15%' }}>CVC</th>
+                        <th style={{ width: '15%' }}>Датум истека</th>
+                        <th style={{ width: '30%' }}>Име и презиме </th>
+                        <th style={{ width: '30%' }}>Број картице</th>
                         <th style={{ width: '10%' }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     {users && users.map(user =>
                         <tr key={user.id}>
-                            <td>{user.title} {user.firstName} {user.lastName}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
+                            <td>{user.cvc}</td>
+                            <td>{user.expiry}</td>
+                            <td>{user.userName} </td>                            
+                            <td>{user.cardNumber}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
-                                <Link to={`${path}/edit/${user.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
+                                <Link to={`${path}/edit/${user.id}`} className="btn btn-sm btn-primary mr-1">Уреди</Link>
                                 <button onClick={() => deleteUser(user.id)} className="btn btn-sm btn-danger btn-delete-user" disabled={user.isDeleting}>
                                     {user.isDeleting 
                                         ? <span className="spinner-border spinner-border-sm"></span>
-                                        : <span>Delete</span>
+                                        : <span>Бриши</span>
                                     }
                                 </button>
                             </td>
@@ -61,7 +63,7 @@ function List({ match }) {
                     {users && !users.length &&
                         <tr>
                             <td colSpan="4" className="text-center">
-                                <div className="p-2">No Users To Display</div>
+                                <div className="p-2">Није сачувана ни једна картица</div>
                             </td>
                         </tr>
                     }
